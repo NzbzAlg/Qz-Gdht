@@ -1,0 +1,171 @@
+<template>
+  <div>
+    <sx></sx>
+    <el-divider content-position="left">任务流程信息</el-divider>
+    <div>
+      <el-steps :active="active" finish-status="success" align-center>
+        <el-step title="提交" :description="create_time" style="flex-basis: 30%; margin-right: 0px;"></el-step>
+        <el-step title="审核" :description="pass" style="flex-basis: 30%; margin-right: 0px;"></el-step>
+        <el-step title="发布" :description="end" style="flex-basis: 30%; margin-right: 0px;"></el-step>
+      </el-steps>
+      <!-- <el-button style="margin-top: 12px;" @click="next">下一步</el-button> -->
+    </div>
+    <!-- 基本信息 -->
+    <el-divider content-position="left">基本信息</el-divider>
+    <el-table :data="Information" border style="width: 100%">
+      <el-table-column prop="code" label="画像编号"></el-table-column>
+      <el-table-column prop="name" label="画像名称"></el-table-column>
+      <el-table-column prop="create_time" label="创建时间"></el-table-column>
+      <el-table-column prop="status" label="服务状态"></el-table-column>
+      <el-table-column prop="ddzt" label="有效期"></el-table-column>
+    </el-table>
+    <!-- 客户信息 -->
+    <el-divider content-position="left">客户信息</el-divider>
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column prop="khmc" label="客户名称"></el-table-column>
+      <el-table-column prop="khlx" label="客户类型">
+        <template slot-scope="scope">
+          <span v-if="scope.row.merchantType===1">省级运营中心</span>
+          <span v-if="scope.row.merchantType===2">市级运营中心</span>
+          <span v-if="scope.row.merchantType===3">市级一般代理商</span>
+          <span v-if="scope.row.merchantType===4">大客户</span>
+          <span v-if="scope.row.merchantType===5">清竹数据</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="qy" label="区域"></el-table-column>
+    </el-table>
+    <!-- 采集终端 -->
+    <el-divider content-position="left">采集终端</el-divider>
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column prop="crwid" label="终端编号"></el-table-column>
+      <el-table-column prop="cjrwmc" label="分组"></el-table-column>
+      <el-table-column prop="cjsjl" label="工作状态"></el-table-column>
+      <el-table-column prop="sjsc" label="联网状态"></el-table-column>
+      <el-table-column prop="sjsc" label="位置信息"></el-table-column>
+    </el-table>
+    <!-- 操作信息 -->
+    <el-divider content-position="left">操作信息</el-divider>
+    <el-table :data="Operational" border style="width: 100%">
+      <el-table-column prop="userName" label="操作者"></el-table-column>
+      <el-table-column prop="createTime" label="操作时间"></el-table-column>
+      <el-table-column label="操作类型">
+        <template slot-scope="scope">
+          <span v-if="scope.row.operationType===1">提交</span>
+          <span v-if="scope.row.operationType===2">通过</span>
+          <span v-if="scope.row.operationType===3">驳回</span>
+          <span v-if="scope.row.operationType===4">取消</span>
+          <span v-if="scope.row.operationType===5">待发布</span>
+          <span v-if="scope.row.operationType===6">结束</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="remarks" label="操作备注"></el-table-column>
+    </el-table>
+    <!-- 操作 -->
+    <el-divider content-position="left">操作</el-divider>
+    <el-button size="mini" v-if="status===1" @click="bohui">驳回</el-button>
+    <el-button size="mini" v-if="status===1" @click="shenhe">审核</el-button>
+    <el-button size="mini" v-if="status===5" @click="fabu">发布</el-button>
+     <!-- 驳回 -->
+    <el-dialog title="提示" :visible.sync="bh" width="30%" :before-close="handleClose">
+      <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="bh = false">取 消</el-button>
+        <el-button type="primary" @click="reject">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 发布 -->
+    <el-dialog title="提示" :visible.sync="emancipate" width="30%" :before-close="handleClose1">
+      <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="bh = false">取 消</el-button>
+        <el-button type="primary" @click="certain">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 审核 -->
+    <el-dialog title="提示" :visible.sync="sh" width="30%" :before-close="handleClose2">
+      <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea1"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="sh = false">取 消</el-button>
+        <el-button type="primary" @click="review">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script> 
+import sx from '../components/sxbtn'
+export default {
+  components: {
+    sx
+  },
+  data () {
+    return {
+      active: 1,
+      date: '135421312',
+      tableData: [],
+      Information:[],
+      Operational:[],
+      id: '',
+      create_time: '',
+      pass: '',
+      end: '',
+      status: null,
+    }
+  },
+  mounted () {
+    this.id = this.$route.query.id
+    this.getDetails()
+  },
+  methods: {
+    getDetails () {
+      this.$http.get(`pc/fixed/selectFixedById?taskId=${this.id}`).then(res => {
+        var { code, data } = res.data
+        if (code === 1000) {
+          console.log(data)
+          let info ={
+            'code':data.name.code,
+            'name':data.name.name,
+            'create_time' : data.timePoint.create_time,
+            'status':data.name.status,
+          }
+              this.status = data.name.status
+          this.Information.push(info)
+          this.Operational = data.record
+          this.create_time = data.timePoint.create_time
+          this.pass = data.timePoint.pass
+          this.end = data.timePoint.end
+          if (this.create_time != undefined) {
+            this.active = 1
+          } else if (this.create_time === undefined) {
+            this.active = 0
+          }
+          if (this.pass != undefined) {
+            this.active = 2
+          }
+          if (this.end != undefined) {
+            this.active = 3
+          }
+        }
+      }).catch((err) => {
+        console.log('错误信息' + err)
+      })
+    },
+    // next () {
+    //   if (this.active++ > 2) this.active = 0;
+    // }
+    bohui () {
+      console.log(1)
+    },
+    shenhe () {
+      console.log(2)
+    }
+  }
+}
+</script>
+
+<style>
+.is-process,
+.is-wait {
+  text-align: center;
+}
+</style>
