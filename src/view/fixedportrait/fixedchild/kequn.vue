@@ -152,7 +152,7 @@ export default {
         if (code === 1000) {
           this.data1 = data
          var map = new AMap.Map("allmaps", {
-              zoom: 11
+              zoom: 13
             });
             let heatmap;
             map.plugin(["AMap.Heatmap"], function() {
@@ -160,23 +160,18 @@ export default {
               heatmap = new AMap.Heatmap(map, {
                 radius: 25, //给定半径
                 opacity: [0, 0.8]
-                /*,
-            gradient:{
-                0.5: 'blue',
-                0.65: 'rgb(117,211,248)',
-                0.7: 'rgb(0, 255, 0)',
-                0.9: '#ffea00',
-                1.0: 'red'
-            }
-             */
               });
               //设置数据集：该数据为北京部分“公园”数据
               heatmap.setDataSet({
                 data: data,
-                max: 100
               });
-
-              map.setFitView();
+              const markers = data.map(
+                item =>
+                  new AMap.Marker({
+                    position: new AMap.LngLat(item.lng, item.lat)
+                  })
+              );
+              map.setFitView(markers);
             });
         } else if (code == 2001) {
           this.$message.error(res.data.message);
@@ -389,7 +384,7 @@ export default {
           console.log(data)
           this.data1 = data
           var map = new AMap.Map("allmaps", {
-              zoom: 11
+              zoom: 13
             });
             let heatmap;
             map.plugin(["AMap.Heatmap"], function() {
@@ -410,10 +405,15 @@ export default {
               //设置数据集：该数据为北京部分“公园”数据
               heatmap.setDataSet({
                 data: data,
-                max: 100
               });
 
-              map.setFitView();
+             const markers = data.map(
+                item =>
+                  new AMap.Marker({
+                    position: new AMap.LngLat(item.lng, item.lat)
+                  })
+              );
+              map.setFitView(markers);
             });
         } else if (code == 2001) {
           this.$message.error(res.data.message);
