@@ -767,8 +767,6 @@ export default {
       })
     },
     dialogVisibles(){
-      console.log('xiajsssi',this.xiaji.name)
-      console.log('客服',this.formkhfull.service)
       this.khfull = false
         let info = {
           'contact':this.formkhfull.contact,//联系人

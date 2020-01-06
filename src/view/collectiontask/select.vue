@@ -28,8 +28,8 @@
     </el-table>
     <el-divider content-position="left">采集时间</el-divider>
     <el-table :data="Acquisitiontime" border style="width: 100%">
-      <el-table-column prop="date" label="采集日期"></el-table-column>
-      <el-table-column prop="time" label="采集时段"></el-table-column>
+      <el-table-column prop="date" label="构建日期"></el-table-column>
+      <el-table-column prop="time" label="构建时间"></el-table-column>
     </el-table>
     <el-divider content-position="left">采集场景</el-divider>
     <el-table :data="Scenes" border style="width: 100%">

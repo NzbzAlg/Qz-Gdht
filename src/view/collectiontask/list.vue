@@ -64,7 +64,7 @@
     </div>
     <!-- 表格 -->
     <div :class="$style.table">
-      <el-table ref="filterTable" :data="tableData" style="width: 100%">
+      <el-table ref="filterTable" :data="tableData" style="width: 100%" v-loading="loading">
         <el-table-column label="任务编号" width="180">
           <template slot-scope="scope">
             <span :class="$style.f_rwid" @click="handleEdit( scope.row)">{{scope.row.code}}</span>
@@ -78,7 +78,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="merchant_name" label="客户名称"></el-table-column>
-        <el-table-column prop="from_date" label="采集时间" width="180"></el-table-column>
+        <el-table-column prop="date" label="构建日期"></el-table-column>
+        <el-table-column prop="time" label="构建时间"></el-table-column>
+        <!-- <el-table-column prop="to_date" label="结束时间"></el-table-column> -->
         <el-table-column prop="data_num" label="已采数据"></el-table-column>
         <el-table-column prop="status" label="任务状态">
           <template slot-scope="scope">
@@ -89,8 +91,108 @@
             <span v-if="scope.row.status===4">失效</span>
           </template>
         </el-table-column>
+        <el-table-column label="操作" style="text-align:center" width="150">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="compile(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="expurgate(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
+    <!-- 详情页 -->
+    <el-dialog
+      title="任务详情"
+      :visible.sync="compiles"
+      width="40%"
+      :before-close="handleClose">
+      <el-form
+        :label-position="labelPosition"
+        label-width="100px"
+        :model="management"
+        :class="$style.f_from"
+      >
+        <el-divider content-position="left" style="margin:16px 0;">基本信息</el-divider>
+        <el-row>
+          <el-col :span="12" :class="$style.f_span">
+            <el-form-item label="任务编号:">
+              <div :class="$style.code">
+                <el-input v-model="management.taskCode" :disabled="stop"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="任务名称:">
+              <div :class="$style.code">
+                <el-input v-model="management.taskName" :disabled="stop"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="任务类型:">
+              <div :class="$style.code">
+                <el-input v-model="management.taskType" :disabled="stop"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="已采数据:">
+              <div :class="$style.code">
+                <el-input v-model="management.dataNum" :disabled="stop"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      <el-divider content-position="left" style="margin:16px 0;">修改任务</el-divider>
+        <el-row>
+          <el-col :span="12" :class="$style.f_span">
+            <el-form-item label="起始日期:">
+              <div :class="$style.code">
+                <el-input v-model="management.fromDate"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :class="$style.f_span">
+            <el-form-item label="结束日期:">
+              <div :class="$style.code">
+                <el-input v-model="management.toDate"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :class="$style.f_span">
+            <el-form-item label="开始时间:">
+              <div :class="$style.code">
+                <el-input v-model="management.fromTime"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :class="$style.f_span">
+            <el-form-item label="结束时间:">
+              <div :class="$style.code">
+                <el-input v-model="management.toTime"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="辐射半径:">
+              <div :class="$style.code">
+                <el-select v-model="management.radius">
+                  <el-option
+                    v-for="item in collection"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="compiles = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisibles">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
@@ -112,6 +214,31 @@ export default {
   },
   data () {
     return {
+      collection: [
+        {
+          value: '3',
+          label: '3米'
+        },
+        {
+          value: '5',
+          label: '5米'
+        },
+        {
+          value: '10',
+          label: '10米'
+        },
+        {
+          value: '20',
+          label: '20米'
+        },
+        {
+          value: '100',
+          label: '20+'
+        },
+      ],
+      stop:true,
+      management:{},
+      compiles:false,
       name: '',
       value: '',
       id: '',
@@ -170,6 +297,7 @@ export default {
       PLAT_NUM: '',
       sizes: 10,
       pages: 0,
+      loading:true
     }
   },
   mounted () {
@@ -177,14 +305,104 @@ export default {
     this.getCount()
   },
   methods: {
+    dialogVisibles(){
+      let info = {
+          'code':this.management.taskCode,
+          // 'name':this.management.contact,//联系人
+          'radius':this.management.radius,//联系电话
+          'fromDate':this.management.fromDate,//联系邮箱
+          'toDate':this.management.toDate,//联系地址
+          'fromTime':this.management.fromTime.split(':')[0],//id
+          'toTime':this.management.toTime.split(':')[0],//客服
+        }
+      this.$http.post(`modules/task/updateTaskByTime`,info).then(res => {
+        var { code, data } = res.data
+        if (code === 1000) {
+          this.compiles = false
+          this.getList()
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            });
+        } else {
+          this.$message.error(res.data.message);
+        }
+      }).catch((err) => {
+        console.log('错误信息' + err)
+      })
+    },
+    //编辑
+    compile(index,row){
+      this.compiles = true
+      console.log('bianji',row)
+      this.$http.get(`modules/task/detail/${row.id}`,{params:{
+      }}).then(res => {
+        console.log(res)
+        var { code, data } = res.data
+        if (code === 1000) {
+          data.fromDate= data.fromDate.substr(0,10)
+          data.toDate= data.toDate.substr(0,10)
+          data.fromTime = data.fromTime + ":00"
+          data.toTime = data.toTime + ":00"
+          this.management = data
+        } else if (code == 2001) {
+          this.$message.error(res.data.message);
+          window.sessionStorage.clear();
+          window.localStorage.clear();
+          this.$router.push('/')
+        } else {
+          this.$message.error(res.data.message);
+        }
+      }).catch(function (error) {
+        console.log('错误信息' + error)
+      })
+
+    },
+    //删除
+    expurgate(index,row){
+      console.log('shanchu',row)
+      var infos = JSON.parse(sessionStorage.getItem('info'))
+      if(infos.id === 1){
+        this.$confirm('确认要删除吗?, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.get(`modules/task/delTask/${row.id}`, {
+              params:{
+                // 'id':row.id
+                // accountName:'qzcrrohrzez3'
+            }
+          }).then(res => {
+            var { code, data } = res.data
+            if (code === 1000) {
+              this.$message({
+                message: '已删除',
+                type: 'success'
+              });
+              this.getList()
+            } else {
+              this.$message.error(res.data.message);
+            }
+          }).catch(function (error) {
+            console.log('错误信息' + error)
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
+      }else{
+        this.$message.error("请联系管理员删除此任务");
+      }
+    },
     getList () {
       // console.log(sessionStorage.getItem('infos.id' ))
       var infos = JSON.parse(sessionStorage.getItem('info'))
       if(infos.id === 1){
         infos.id=''
       }
-      console.log('id',infos.id)
-      console.log('整个数据',infos)
       this.$http.get(`modules/task/taskList`, {
         params: {
           size: this.sizes,
@@ -195,9 +413,14 @@ export default {
       }).then(res => {
         var { code, data } = res.data
         if (code === 1000) {
+          this.loading = false
           // console.log('ss',sessionStorage.getItem( "serviceId"))
           this.tableData = data.content
           this.total = data.total
+          this.tableData.forEach(item => {
+              item.date = item.from_date + "\n" + "至" + "\n" + item.to_date;
+              item.time = item.from_time + ":00" + "-" + item.to_time + ":00";
+            });
         } else if (code == 2001) {
           this.$message.error(res.data.message);
           window.sessionStorage.clear();
@@ -249,6 +472,10 @@ export default {
           if (code === 1000) {
             this.tableData = data.content
             this.total = data.total
+            this.tableData.forEach(item => {
+              item.date = item.from_date + "\n" + "至" + "\n" + item.to_date;
+              item.time = item.from_time + ":00" + "-" + item.to_time + ":00";
+            });
           } else if (code == 2001) {
           this.$message.error(res.data.message);
           window.sessionStorage.clear();
@@ -275,6 +502,10 @@ export default {
           if (code === 1000) {
             this.tableData = data.content
             this.total = data.total
+            this.tableData.forEach(item => {
+              item.date = item.from_date + "\n" + "至" + "\n" + item.to_date;
+              item.time = item.from_time + ":00" + "-" + item.to_time + ":00";
+            });
           } else if (code == 2001) {
           this.$message.error(res.data.message);
           window.sessionStorage.clear();
@@ -312,6 +543,10 @@ export default {
         if (code === 1000) {
           this.tableData = data.content
           this.total = data.total
+          this.tableData.forEach(item => {
+              item.date = item.from_date + "\n" + "至" + "\n" + item.to_date;
+              item.time = item.from_time + ":00" + "-" + item.to_time + ":00";
+            });
         } else if (code == 2001) {
           this.$message.error(res.data.message);
           window.sessionStorage.clear();
@@ -342,6 +577,10 @@ export default {
         if (code === 1000) {
           this.tableData = data.content
           this.total = data.total
+          this.tableData.forEach(item => {
+              item.date = item.from_date + "\n" + "至" + "\n" + item.to_date;
+              item.time = item.from_time + ":00" + "-" + item.to_time + ":00";
+            });
         } else if (code == 2001) {
           this.$message.error(res.data.message);
           window.sessionStorage.clear();
@@ -359,6 +598,7 @@ export default {
     },
     handleClose () {
       this.full = false
+      this.compiles = false
     },
     resetDateFilter () {
       this.$refs.filterTable.clearFilter('date');

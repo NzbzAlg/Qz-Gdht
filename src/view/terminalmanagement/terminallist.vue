@@ -25,10 +25,10 @@
           </template>
         </el-table-column>
         <el-table-column label="工作状态">
-          <el-table-column property="cjzt" label="采集状态">
+          <el-table-column property="cjzt" label="状态">
             <template slot-scope="scope">
-              <span v-if="scope.row.status===1">采集</span>
-              <span v-if="scope.row.status===2">未采集</span>
+              <span v-if="scope.row.status===1">上传中</span>
+              <span v-if="scope.row.status===2">未启动</span>
             </template>
           </el-table-column>
           <el-table-column property="lwzt" label="联网状态">
@@ -71,8 +71,8 @@
             <el-table-column property="dataCount" label="采集数据"></el-table-column>
             <el-table-column property="rwzt" label="任务状态">
               <template slot-scope="scope">
-                <span v-if="scope.row.status===1">采集</span>
-                <span v-if="scope.row.status===2">未采集</span>
+                <span v-if="scope.row.status===1">上传中</span>
+                <span v-if="scope.row.status===2">未启动</span>
               </template>
             </el-table-column>
           </el-table-column>
@@ -90,8 +90,8 @@
             <el-table-column property="mac_num" label="采集数据"></el-table-column>
             <el-table-column property="hxzt" label="任务状态">
               <template slot-scope="scope">
-                <span v-if="scope.row.status===1">采集</span>
-                <span v-if="scope.row.status===2">未采集</span>
+                <span v-if="scope.row.status===1">上传中</span>
+                <span v-if="scope.row.status===2">未启动</span>
               </template>
             </el-table-column>
           </el-table-column>
@@ -194,10 +194,10 @@ export default {
       options: [
         {
           id: 1,
-          name: '采集中'
+          name: '上传中'
         }, {
           id: 2,
-          name: '待采集'
+          name: '待上传'
         }, {
           id: 3,
           name: '已联网'
@@ -554,8 +554,6 @@ export default {
             }
             // that.tableData.push(item);
             // console.log(that.tableData)
-            
-
           })
         } else if (code == 2001) {
           this.$message.error(res.data.message);
