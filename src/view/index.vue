@@ -525,7 +525,7 @@ export default {
   margin-left: 200px;
 }
 .main {
-  margin-top: 58px;
+  margin-top: 55px;
 }
 .f_yjname {
   font-weight: 700;

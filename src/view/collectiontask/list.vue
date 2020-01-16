@@ -60,7 +60,7 @@
         :class="$style.f_rdate"
         value-format="yyyy-MM-dd"
       ></el-date-picker>
-      <el-button type="primary" icon="el-icon-search" style="float: right;" @click="search">搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" style="float: left;margin-left: 56px;" @click="search">搜索</el-button>
     </div>
     <!-- 表格 -->
     <div :class="$style.table">
@@ -144,6 +144,13 @@
         </el-row>
       <el-divider content-position="left" style="margin:16px 0;">修改任务</el-divider>
         <el-row>
+          <!-- <el-col :span="12" :class="$style.f_span">
+            <el-form-item label="任务名称:">
+              <div :class="$style.code">
+                <el-input v-model="management.taskName"></el-input>
+              </div>
+            </el-form-item>
+          </el-col> -->
           <el-col :span="12" :class="$style.f_span">
             <el-form-item label="起始日期:">
               <div :class="$style.code">
@@ -232,7 +239,7 @@ export default {
           label: '20米'
         },
         {
-          value: '100',
+          value: '500',
           label: '20+'
         },
       ],
@@ -308,12 +315,12 @@ export default {
     dialogVisibles(){
       let info = {
           'code':this.management.taskCode,
-          // 'name':this.management.contact,//联系人
-          'radius':this.management.radius,//联系电话
-          'fromDate':this.management.fromDate,//联系邮箱
-          'toDate':this.management.toDate,//联系地址
-          'fromTime':this.management.fromTime.split(':')[0],//id
-          'toTime':this.management.toTime.split(':')[0],//客服
+          // 'name':this.management.taskName,
+          'radius':this.management.radius,//采集距离
+          'fromDate':this.management.fromDate,//开始日期
+          'toDate':this.management.toDate,//结束日期
+          'fromTime':this.management.fromTime.split(':')[0],//开始时间
+          'toTime':this.management.toTime.split(':')[0],//结束时间
         }
       this.$http.post(`modules/task/updateTaskByTime`,info).then(res => {
         var { code, data } = res.data
@@ -360,7 +367,7 @@ export default {
     },
     //删除
     expurgate(index,row){
-      console.log('shanchu',row)
+      // console.log('shanchu',row)
       var infos = JSON.parse(sessionStorage.getItem('info'))
       if(infos.id === 1){
         this.$confirm('确认要删除吗?, 是否继续?', '提示', {

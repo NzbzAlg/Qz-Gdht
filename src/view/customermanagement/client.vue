@@ -24,54 +24,54 @@
           <el-option v-for="item in xzlx" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="5" v-if="leixing!=4&leixing!=''&leixing!=6">
+      <el-col :span="5" v-if="leixing!=4&leixing!=''&leixing!=6&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">省:</span>
         <el-select v-model="province" @change="provinceevent" placeholder="请选择" style=" display: inline-block;width: 50%;float: left;margin-left: 10px;">
           <el-option v-for="item in Provinceoptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="5" v-if="leixing!=4&leixing!=''&leixing!=1&leixing!=6">
+      <el-col :span="5" v-if="leixing!=4&leixing!=''&leixing!=1&leixing!=6&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">市:</span>
         <el-select v-model="city" @change="cityevent" placeholder="请选择" style=" display: inline-block;width: 50%;float: left;margin-left: 10px;">
           <el-option v-for="item in Cityoptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="5" v-if="leixing!=4&leixing!=''&leixing!=1&leixing!=6">
+      <el-col :span="5" v-if="leixing!=4&leixing!=''&leixing!=1&leixing!=6&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">区:</span>
         <el-select v-model="area"  placeholder="请选择" style=" display: inline-block;width: 50%;float: left;margin-left: 10px;">
           <el-option v-for="item in Areaoptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
     </el-row>
-    <el-divider content-position="left" v-if="leixing!=1&leixing!=6&leixing!=''">上级客户</el-divider>
+    <el-divider content-position="left" v-if="leixing!=1&leixing!=6&leixing!=''&leixing!=7">上级客户</el-divider>
     <el-row>
       <!-- 市级一般代理的上级客户 -->
-      <el-col :span="7" style="margin-left:38px;display:block" v-if="leixing!=4&leixing!=6&leixing!=''&leixing!=1&leixing!=2">
+      <el-col :span="7" style="margin-left:38px;display:block" v-if="leixing!=4&leixing!=6&leixing!=''&leixing!=1&leixing!=2&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">市级运营中心:</span>
         <el-select v-model="value2" style=" display: inline-block;width: 50%;float: left;margin-left: 10px;" placeholder="请选择" clearable :disabled="stop5" @change="getshiji">
             <el-option v-for="item in shijiyunying" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="7" style="margin-left:38px" v-if="leixing!=4&leixing!=6&leixing!=''&leixing!=1">
+      <el-col :span="7" style="margin-left:38px" v-if="leixing!=4&leixing!=6&leixing!=''&leixing!=1&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;display:block;">合资公司:</span>
         <el-select v-model="value1" clearable style=" display: inline-block;width: 50%;float: left;margin-left: 10px;" placeholder="请选择" :disabled="stop4" @change="getFinds">
             <el-option v-for="item in optionsd" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
       <!-- 大客户的上级客户 -->
-      <el-col :span="7" style="margin-left:38px;display:block" v-if="leixing!=6&leixing!=''&leixing!=1&leixing!=2&leixing!=3">
+      <el-col :span="7" style="margin-left:38px;display:block" v-if="leixing!=6&leixing!=''&leixing!=1&leixing!=2&leixing!=3&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">市级一般代理商:</span>
         <el-select v-model="value3" style=" display: inline-block;width: 50%;float: left;margin-left: 10px;" clearable placeholder="请选择" :disabled="stop3" @change="getyiban">
             <el-option v-for="item in shijiyiban" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="7" style="margin-left:10px;display:block" v-if="leixing!=6&leixing!=''&leixing!=1&leixing!=2&leixing!=3">
+      <el-col :span="7" style="margin-left:10px;display:block" v-if="leixing!=6&leixing!=''&leixing!=1&leixing!=2&leixing!=3&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">市级运营中心:</span>
         <el-select v-model="value2"  style=" display: inline-block;width: 50%;float: left;margin-left: 10px;" clearable placeholder="请选择" :disabled="stop2" @change="getshiji">
             <el-option v-for="item in shijiyunying" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="7" style="margin-left:10px;display:block" v-if="leixing!=6&leixing!=''&leixing!=1&leixing!=2&leixing!=3">
+      <el-col :span="7" style="margin-left:10px;display:block" v-if="leixing!=6&leixing!=''&leixing!=1&leixing!=2&leixing!=3&leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">合资公司:</span>
         <el-select v-model="value1" style=" display: inline-block;width: 50%;float: left;margin-left: 10px;" clearable placeholder="请选择" :disabled="stop1" @change="getFinds">
             <el-option v-for="item in optionsd" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -93,21 +93,21 @@
         <el-input placeholder="请输入内容" v-model="fixedPrice" clearable style=" display: inline-block;width: 50%;float: left;margin-left: 10px;"></el-input>
       </el-col>
     </el-row>
-     <el-divider content-position="left">联系方式</el-divider>
+     <el-divider content-position="left" v-if="leixing!=7">联系方式</el-divider>
     <el-row>
-      <el-col :span="5" style="margin-left:48px">
+      <el-col :span="5" style="margin-left:48px" v-if="leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">联系人:</span>
         <el-input placeholder="请输入内容"  v-model="contact" clearable style=" display: inline-block;width: 50%;float: left;margin-left: 10px;"></el-input>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-if="leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">联系电话:</span>
         <el-input placeholder="请输入内容"  v-model="phone" clearable style=" display: inline-block;width: 50%;float: left;margin-left: 10px;"></el-input>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-if="leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">联系邮箱:</span>
         <el-input placeholder="请输入内容" type="email" v-model="email" clearable style=" display: inline-block;width: 50%;float: left;margin-left: 10px;"></el-input>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-if="leixing!=7">
         <span style="display: inline-block; float: left; margin-top: 10px;">联系地址:</span>
         <el-input placeholder="请输入内容" v-model="address" clearable style=" display: inline-block;width: 50%;float: left;margin-left: 10px;"></el-input>
       </el-col>
@@ -183,6 +183,10 @@ export default {
         {
           id: 6,
           name: '合资公司'
+        },
+        {
+          id:7,
+          name:'展会演示'
         }
       ],
       leixing: '',
@@ -391,7 +395,35 @@ export default {
           }).catch((err) => {
             console.log('错误信息' + err)
           })
-        } else {
+        }else if(this.leixing === 7){
+          let info = {
+            'name': this.name,
+            'companyName': this.companyName,
+            'username': this.username,
+            'proxyType': this.leixing,
+            'service': this.value,
+          }
+          this.$http.post(`modules/merchant`, info).then(res => {
+            var { code, data } = res.data
+            if (code === 1000) {
+              this.$router.push('/index/clientele.vue')
+              this.$message({
+                message: '创建成功',
+                type: 'success'
+              });
+            } else if (code == 2001) {
+              this.$message.error(res.data.message);
+              window.sessionStorage.clear();
+              window.localStorage.clear();
+              this.$router.push('/')
+            } else {
+              this.$message.error(res.data.message);
+            }
+          }).catch((err) => {
+            console.log('错误信息' + err)
+          })
+        }
+        else {
           let info = {
             'name': this.name,
             'companyName': this.companyName,

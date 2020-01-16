@@ -177,49 +177,6 @@ export default {
       this.Fence = true
       var str = row.lbs
       this.$refs.amapWeilan.loadLbs(str);
-      // // var str = '[[{\"lng\":120.360538,\"lat\":36.11021},{\"lng\":120.406244,\"lat\":36.11021},{\"lng\":120.408687,\"lat\":36.083497},{\"lng\":120.356082,\"lat\":36.078596},{\"lng\":120.347459,\"lat\":36.088397}]]'
-      // var strObj = JSON.parse(str)
-      // var points = strObj;
-      // // 百度坐标系坐标(地图中需要使用这个)
-      // var bPoints = new Array();
-      // //创建标注点并添加到地图中
-      // function addMarker (points) {
-      //   //循环建立标注点
-      //   // points.forEach(item=>{
-      //   // console.log(item)
-      //   var polygon = new BMap.Polygon(points, { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.5 });  //创建多边形
-      //   map.addOverlay(polygon);   //增加多边形
-      //   // })
-      //   for (var i = 0, pointsLen = points.length; i < pointsLen; i++) {
-      //     var point = new BMap.Point(points[i].lng, points[i].lat); //将标注点转化成地图上的点
-      //     bPoints.push(point); // 添加到百度坐标数组 用于自动调整缩放级别
-      //     // console.log(bPoints)
-      //     // var myIcon = new BMap.Icon(tb1, new BMap.Size(20, 32), { //图片大小 
-      //     //   anchor: new BMap.Size(10, 25),  //标注相对point的偏移位置
-      //     // });
-      //     // myIcon.setImageSize(new BMap.Size(20, 32))
-      //     var marker = new BMap.Polygon(point); //将点转化成标注点
-      //     map.addOverlay(marker);  //将标注点添加到地图上
-      //     // marker.addEventListener("mouseout", attribute1);
-      //   }
-      // }
-      // // 根据点的数组自动调整缩放级别
-      // function setZoom (bPoints) {
-      //   var view = map.getViewport(eval(bPoints));
-      //   var mapZoom = view.zoom;
-      //   var centerPoint = view.center;
-      //   map.centerAndZoom(centerPoint, mapZoom);
-      // }
-      // //创建地图
-
-      // var map = new BMap.Map("allmap");
-      // map.centerAndZoom(new BMap.Point(112.591886, 26.905407), 14); // 设置中心点
-      // addMarker(points);
-      // map.addControl(new BMap.MapTypeControl());
-      // map.enableScrollWheelZoom(true);
-      // setTimeout(function () {
-      //   setZoom(bPoints);
-      // }, 3000)
     },
     stop () {
       this.Fence = false

@@ -151,6 +151,7 @@
       <el-col :span="7" style="margin-left: 40px;">
         <span :class="$style.f_khmc">人群标签:</span>
         <el-select
+          filterable 
           v-model="value1"
           multiple
           :class="$style.f_khipt"

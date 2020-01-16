@@ -36,7 +36,6 @@
       <el-table-column label="地理位置">
         <template slot-scope="scope">
           <span
-            @click="examine(scope.$index, scope.row)"
             class="f_bh"
           >{{scope.row.province}}\{{scope.row.city}}\{{scope.row.area}}</span>
         </template>
@@ -85,11 +84,9 @@
           <span v-if="scope.row.isNet===2">否</span>
         </template>
       </el-table-column>
-      <el-table-column label="位置信息">
+      <el-table-column label="经纬度">
         <template slot-scope="scope">
           <span
-            @click="renwuzb(scope.$index,scope.row)"
-            :class="$style.f_renwuid"
             v-if="obscure"
           >{{scope.row.lat}}\{{scope.row.lng}}</span>
           <span :class="$style.f_renwuid" @click="address(scope.$index,scope.row)" v-if="!obscure">{{scope.row.addressname}}</span>
@@ -99,7 +96,7 @@
     <el-divider content-position="left">任务备注</el-divider>
     <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea"></el-input>
     <!-- 坐标 -->
-    <el-dialog
+    <!-- <el-dialog
       title="位置信息"
       :visible.sync="jbmap"
       width="30%"
@@ -118,7 +115,7 @@
           </bm-marker>
         </baidu-map>
       </div>
-    </el-dialog>
+    </el-dialog> -->
     <!-- 地图 -->
     <div class="f_dg f_map" v-show="Fence">
       <div class="f_backdrop" @click="stop"></div>
@@ -272,9 +269,9 @@ export default {
         console.log('错误信息' + err)
       })
     },
-    renwuzb (index,row) {
-      this.obscure = false
-    },
+    // renwuzb (index,row) {
+    //   this.obscure = false
+    // },
     address(index,row){
       this.obscure=true
     },
@@ -297,54 +294,54 @@ export default {
     handleClose () {
       this.jbmap = false
     },
-    examine (index, row) {
-      this.Fence = true
-      // console.log(row)
-      var str = row.lbs
-      // var str = '[[{\"lng\":120.360538,\"lat\":36.11021},{\"lng\":120.406244,\"lat\":36.11021},{\"lng\":120.408687,\"lat\":36.083497},{\"lng\":120.356082,\"lat\":36.078596},{\"lng\":120.347459,\"lat\":36.088397}]]'
-      var strObj = JSON.parse(str)
-      var points = strObj[0];
-      // 百度坐标系坐标(地图中需要使用这个)
-      var bPoints = new Array();
-      //创建标注点并添加到地图中
-      function addMarker (points) {
-        //循环建立标注点
-        // points.forEach(item=>{
-        // console.log(item)
-        var polygon = new BMap.Polygon(points, { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.5 });  //创建多边形
-        map.addOverlay(polygon);   //增加多边形
-        // })
-        for (var i = 0, pointsLen = points.length; i < pointsLen; i++) {
-          var point = new BMap.Point(points[i].lng, points[i].lat); //将标注点转化成地图上的点
-          bPoints.push(point); // 添加到百度坐标数组 用于自动调整缩放级别
-          // console.log(bPoints)
-          // var myIcon = new BMap.Icon(tb1, new BMap.Size(20, 32), { //图片大小 
-          //   anchor: new BMap.Size(10, 25),  //标注相对point的偏移位置
-          // });
-          // myIcon.setImageSize(new BMap.Size(20, 32))
-          var marker = new BMap.Polygon(point); //将点转化成标注点
-          map.addOverlay(marker);  //将标注点添加到地图上
-          // marker.addEventListener("mouseout", attribute1);
-        }
-      }
-      // 根据点的数组自动调整缩放级别
-      function setZoom (bPoints) {
-        var view = map.getViewport(eval(bPoints));
-        var mapZoom = view.zoom;
-        var centerPoint = view.center;
-        map.centerAndZoom(centerPoint, mapZoom);
-      }
-      //创建地图
+    // examine (index, row) {
+    //   this.Fence = true
+    //   // console.log(row)
+    //   var str = row.lbs
+    //   // var str = '[[{\"lng\":120.360538,\"lat\":36.11021},{\"lng\":120.406244,\"lat\":36.11021},{\"lng\":120.408687,\"lat\":36.083497},{\"lng\":120.356082,\"lat\":36.078596},{\"lng\":120.347459,\"lat\":36.088397}]]'
+    //   var strObj = JSON.parse(str)
+    //   var points = strObj[0];
+    //   // 百度坐标系坐标(地图中需要使用这个)
+    //   var bPoints = new Array();
+    //   //创建标注点并添加到地图中
+    //   function addMarker (points) {
+    //     //循环建立标注点
+    //     // points.forEach(item=>{
+    //     // console.log(item)
+    //     var polygon = new BMap.Polygon(points, { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.5 });  //创建多边形
+    //     map.addOverlay(polygon);   //增加多边形
+    //     // })
+    //     for (var i = 0, pointsLen = points.length; i < pointsLen; i++) {
+    //       var point = new BMap.Point(points[i].lng, points[i].lat); //将标注点转化成地图上的点
+    //       bPoints.push(point); // 添加到百度坐标数组 用于自动调整缩放级别
+    //       // console.log(bPoints)
+    //       // var myIcon = new BMap.Icon(tb1, new BMap.Size(20, 32), { //图片大小 
+    //       //   anchor: new BMap.Size(10, 25),  //标注相对point的偏移位置
+    //       // });
+    //       // myIcon.setImageSize(new BMap.Size(20, 32))
+    //       var marker = new BMap.Polygon(point); //将点转化成标注点
+    //       map.addOverlay(marker);  //将标注点添加到地图上
+    //       // marker.addEventListener("mouseout", attribute1);
+    //     }
+    //   }
+    //   // 根据点的数组自动调整缩放级别
+    //   function setZoom (bPoints) {
+    //     var view = map.getViewport(eval(bPoints));
+    //     var mapZoom = view.zoom;
+    //     var centerPoint = view.center;
+    //     map.centerAndZoom(centerPoint, mapZoom);
+    //   }
+    //   //创建地图
 
-      var map = new BMap.Map("allmap");
-      map.centerAndZoom(new BMap.Point(112.591886, 26.905407), 14); // 设置中心点
-      addMarker(points);
-      map.addControl(new BMap.MapTypeControl());
-      map.enableScrollWheelZoom(true);
-      setTimeout(function () {
-        setZoom(bPoints);
-      }, 3000)
-    },
+    //   var map = new BMap.Map("allmap");
+    //   map.centerAndZoom(new BMap.Point(112.591886, 26.905407), 14); // 设置中心点
+    //   addMarker(points);
+    //   map.addControl(new BMap.MapTypeControl());
+    //   map.enableScrollWheelZoom(true);
+    //   setTimeout(function () {
+    //     setZoom(bPoints);
+    //   }, 3000)
+    // },
     stop () {
       this.Fence = false
     },

@@ -1,16 +1,17 @@
 <template>
   <div>
     <el-row :class="$style.f_row">
-      
-    </el-row>
-    <!-- 操作 -->
-    <div :class="$style.f_da" class="f_da" >
-        <el-card shadow="hover" style=" height:36px;    line-height: 46px;">
-          <p style="margin:0;display: inline-block;">人群标签</p>
+      <div :class="$style.f_da">
+        <el-card shadow="hover">
           <span :class="$style.f_sl">{{peopellabel}}</span>
+          <p>人群标签</p>
         </el-card>
       </div>
-    <div style="text-align: right; margin-bottom: 20px;">
+    </el-row>
+    <!-- 操作 -->
+    <div style="margin-bottom: 20px;text-align: left;">
+      <el-input placeholder="请输入标签名称"  clearable style=" width: calc(100% - 80%);float:left"></el-input>
+      <el-button type="success" size="medium" icon="el-icon-search" style="margin-left:20px;">搜索</el-button>
       <el-button size="medium" type="primary" @click="zengjia">增加</el-button>
     </div>
     <!-- 表格 -->
@@ -27,7 +28,7 @@
       </el-table>
     </div>
     <!-- 分页 -->
-    <el-pagination
+    <!-- <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage4"
@@ -35,7 +36,7 @@
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
-    ></el-pagination>
+    ></el-pagination> -->
     <!-- 上传 -->
     <div>
       <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
@@ -63,7 +64,7 @@
       <el-dialog title="增加" :visible.sync="dialogVisible1" width="30%" :before-close="handleClose1">
         <el-input placeholder="请输入内容" v-model="input" clearable></el-input>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button @click="dialogVisible1 = false">取 消</el-button>
           <el-button type="primary" @click="appdefine">确 定</el-button>
         </span>
       </el-dialog>
@@ -73,7 +74,7 @@
       <el-dialog title="修改" :visible.sync="dialogVisible2" width="30%" :before-close="handleClose2">
         <el-input placeholder="请输入内容" v-model="input1" clearable></el-input>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button @click="dialogVisible2 = false">取 消</el-button>
           <el-button type="primary" @click="define">确 定</el-button>
         </span>
       </el-dialog>
@@ -135,7 +136,11 @@ export default {
     },
     define () {
       console.log(this.input1)
-      this.$http.put(`modules/signCrowd?id=${this.id}&name=${this.input1}`).then(res => {
+      let info = {
+        id:this.id,
+        name:this.input1
+      }
+      this.$http.put(`modules/signCrowd`,info).then(res => {
         var { code, data } = res.data
         if (code === 1000) {
           this.$message({

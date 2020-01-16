@@ -59,6 +59,7 @@
             <span v-if="scope.row.proxy_type===4">大客户</span>
             <span v-if="scope.row.proxy_type===5">清竹数据</span>
             <span v-if="scope.row.proxy_type===6">合资公司</span>
+            <span v-if="scope.row.proxy_type===7">展会演示</span>
           </template>
         </el-table-column>
         <el-table-column property="region" label="区域" sortable></el-table-column>
@@ -175,10 +176,10 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-divider content-position="left" v-if="formkhfull.proxyType!=5&formkhfull.proxyType!=6&formkhfull.proxyType!=1">上级客户</el-divider>
+        <el-divider content-position="left" v-if="formkhfull.proxyType!=5&formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=7">上级客户</el-divider>
         <!-- 市级运营中心的下级 -->
         <el-row>
-         <el-col :span="12" v-if="formkhfull.proxyType!=4&formkhfull.proxyType!=6&formkhfull.proxyType!=''&formkhfull.proxyType!=1&formkhfull.proxyType!=3&formkhfull.proxyType!=5">
+         <el-col :span="12" v-if="formkhfull.proxyType!=4&formkhfull.proxyType!=6&formkhfull.proxyType!=''&formkhfull.proxyType!=1&formkhfull.proxyType!=3&formkhfull.proxyType!=5&formkhfull.proxyType!=7">
             <el-form-item label="合资公司:">
               <div :class="$style.code">
                 <el-select v-model="formkhfull.parentHZ" placeholder="请选择" clearable>
@@ -195,7 +196,7 @@
           </el-row>
         <!-- 市级一般代理的上级 -->
         <el-row>
-          <el-col :span="12" v-if="formkhfull.proxyType!=4&formkhfull.proxyType!=6&formkhfull.proxyType!=''&formkhfull.proxyType!=1&formkhfull.proxyType!=2&formkhfull.proxyType!=5">
+          <el-col :span="12" v-if="formkhfull.proxyType!=4&formkhfull.proxyType!=6&formkhfull.proxyType!=''&formkhfull.proxyType!=1&formkhfull.proxyType!=2&formkhfull.proxyType!=5&formkhfull.proxyType!=7">
             <el-form-item label="市级运营中心:" >
               <div :class="$style.code">
                 <el-select v-model="formkhfull.parentSJ" placeholder="请选择" :disabled="stop5" @change="getshiji" clearable>
@@ -204,7 +205,7 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formkhfull.proxyType!=4&formkhfull.proxyType!=6&formkhfull.proxyType!=''&formkhfull.proxyType!=1&formkhfull.proxyType!=2&formkhfull.proxyType!=5">
+          <el-col :span="12" v-if="formkhfull.proxyType!=4&formkhfull.proxyType!=6&formkhfull.proxyType!=''&formkhfull.proxyType!=1&formkhfull.proxyType!=2&formkhfull.proxyType!=5&formkhfull.proxyType!=7">
             <el-form-item label="合资公司:">
               <div :class="$style.code">
                 <el-select v-model="formkhfull.parentHZ" placeholder="请选择" :disabled="stop4" @change="getFinds" clearable>
@@ -221,7 +222,7 @@
         </el-row>
         <!-- 大客户的上级 -->
         <el-row>
-          <el-col :span="12" v-if="formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=''&formkhfull.proxyType!=2&formkhfull.proxyType!=3&formkhfull.proxyType!=5">
+          <el-col :span="12" v-if="formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=''&formkhfull.proxyType!=2&formkhfull.proxyType!=3&formkhfull.proxyType!=5&formkhfull.proxyType!=7">
             <el-form-item label="市级一般代理:" >
               <div :class="$style.code">
                 <el-select v-model="formkhfull.parentYB" placeholder="请选择" :disabled="stop3" @change="getyiban" clearable>
@@ -230,7 +231,7 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=''&formkhfull.proxyType!=2&formkhfull.proxyType!=3&formkhfull.proxyType!=5">
+          <el-col :span="12" v-if="formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=''&formkhfull.proxyType!=2&formkhfull.proxyType!=3&formkhfull.proxyType!=5&formkhfull.proxyType!=7">
             <el-form-item label="市级运营中心:" >
               <div :class="$style.code">
                 <el-select v-model="formkhfull.parentSJ" placeholder="请选择" :disabled="stop2" @change="getshiji" clearable>
@@ -239,7 +240,7 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=''&formkhfull.proxyType!=2&formkhfull.proxyType!=3&formkhfull.proxyType!=5">
+          <el-col :span="12" v-if="formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=''&formkhfull.proxyType!=2&formkhfull.proxyType!=3&formkhfull.proxyType!=5&formkhfull.proxyType!=7">
             <el-form-item label="合资公司:">
               <div :class="$style.code">
                 <el-select v-model="formkhfull.parentHZ" placeholder="请选择" :disabled="stop1" @change="getFinds" clearable>
@@ -432,6 +433,10 @@ export default {
         {
           id:6,
           name:'合资公司'
+        },
+        {
+          id:7,
+          name:'展会演示'
         }
       ],
       jy: true,

@@ -43,12 +43,12 @@
     </el-table>
     <!-- 数据信息 -->
     <el-divider content-position="left">数据信息</el-divider>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="dgsjl" label="订购数据量"></el-table-column>
-      <el-table-column prop="sjshl" label="实际数据量"></el-table-column>
-      <el-table-column prop="dgzj" label="订购总价"></el-table-column>
-      <el-table-column prop="ysjl" label="源数据量"></el-table-column>
-      <el-table-column prop="bqxq" label="标签需求"></el-table-column>
+    <el-table :data="sources" border style="width: 100%">
+      <el-table-column prop="buyAmount" label="订购数据量"></el-table-column>
+      <el-table-column prop="actualAmount" label="实际数据量"></el-table-column>
+      <el-table-column prop="buyPrice" label="订购总价"></el-table-column>
+      <el-table-column prop="sourceData" label="源数据量"></el-table-column>
+      <el-table-column prop="sign" label="标签需求"></el-table-column>
     </el-table>
     <!-- 数据来源 -->
     <el-divider content-position="left">数据来源</el-divider>
@@ -162,6 +162,7 @@ export default {
       textarea1: '',
       BasicInformation: [],
       clientInformation: [],
+      sources:[],
       media: [],
       operatingInformation: [],
       create_time: '',
@@ -206,6 +207,13 @@ export default {
             merchantType: data.merchantType,
             proxyArea: data.proxyArea
           }
+          var dataSources = {
+            sourceData:data.sourceData,
+            buyAmount:data.buyAmount,
+            sign:data.sign,
+            actualAmount:data.actualAmount,
+            buyPrice:data.buyPrice
+          }
           this.operatingInformation = data.recordList
           this.media = data.mediaList
           this.create_time = data.timePoint.create_time
@@ -222,6 +230,7 @@ export default {
           }
           this.BasicInformation.push(basic)
           this.clientInformation.push(client)
+          this.sources.push(dataSources)
         }  else {
           this.$message.error(res.data.message);
         }

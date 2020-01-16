@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.f_sx">
-    <el-button @click="shuaxin" type="success" size="medium">刷新</el-button>
+    <!-- <el-button @click="shuaxin" type="success" size="medium">刷新</el-button> -->
   </div>
 </template>
 
@@ -8,9 +8,9 @@
 export default {
   inject: ['reload'],
   methods: {
-    shuaxin () {
-      this.reload()
-    },
+    // shuaxin () {
+    //   this.reload()
+    // },
   }
 }
 </script>
