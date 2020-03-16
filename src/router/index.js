@@ -9,9 +9,9 @@ const Role = () => import('@/view/system/role.vue')
 const User = () => import('@/view/system/user.vue')
 // 客户管理---customermanagement   
 const Client = () => import('@/view/customermanagement/client.vue')
-const Filter = () => import('@/view/customermanagement/filter.vue')
+const ShowCustomer = () => import('@/view/customermanagement/showCustomer.vue')
 const Clientele = () => import('@/view/customermanagement/clientele.vue')
-const Addup = () => import('@/view/customermanagement/addup.vue')
+const VisitorInformation = () => import('@/view/customermanagement/visitorInformation.vue')
 // const Clientelxq =()=>import ('@/view/customermanagement/zihtml/clien/telxq.vue')
 // 采集任务---collectiontask     
 const Total = () => import('@/view/collectiontask/total.vue')
@@ -27,6 +27,8 @@ const Notapproved = () => import('@/view/dataorder/notapproved.vue')
 const Notunpublished = () => import('@/view/dataorder/notunpublished.vue')
 const Published = () => import('@/view/dataorder/published.vue')
 const Wspdd = () => import('@/view/dataorder/wspdd.vue')
+//展会订单
+const ExhibitionOrders = () => import('@/view/exhibitionOrders/exhibitionOrders.vue')
 // 画像订单----ikon  
 const Ikonorders = () => import('@/view/ikon/ikonorders.vue')
 const Ikonnotapproved = () => import('@/view/ikon/ikonapproved.vue')
@@ -113,8 +115,12 @@ export default new Router({
           component: Client
         },
         {
-          path: 'filter.vue',
-          component: Filter
+          path:'visitorInformation.vue',
+          component:VisitorInformation
+        },
+        {
+          path: 'showCustomer.vue',
+          component: ShowCustomer
         },
         {
           path: 'clientele.vue',
@@ -126,10 +132,10 @@ export default new Router({
           //   }
           // ]
         },
-        {
-          path: 'addup.vue',
-          component: Addup
-        },
+        // {
+        //   path: 'addup.vue',
+        //   component: Addup
+        // },
         // 采集任务---collectiontask
         {
           path: 'total.vue',
@@ -176,6 +182,10 @@ export default new Router({
         {
           path: 'wspdd.vue',
           component: Wspdd
+        },
+        {
+          path:"exhibitionOrders.vue",
+          component:ExhibitionOrders
         },
         // 画像订单----ikon
         {

@@ -53,6 +53,7 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="create_time" label="日期"></el-table-column>
         <el-table-column prop="account" label="账户"></el-table-column>
+        <el-table-column prop="amount" label="充值金额"></el-table-column>
         <el-table-column prop="name" label="类型">
           <template slot-scope="scope">
             <span v-if="scope.row.type===1">平台充值</span>

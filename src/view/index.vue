@@ -138,7 +138,9 @@ export default {
           id: "2",
           child: [
             // { name: "客户创建", path: '/index/client.vue', id: '6' },
-            { name: "客户列表", path: "/index/clientele.vue", id: "3" }
+            { name: "客户列表", path: "/index/clientele.vue", id: "3" },
+            { name: "访客信息", path: "/index/visitorInformation.vue", id: "31" },
+            { name: "展会客户", path: "/index/showCustomer.vue", id: "32" },
           ]
         },
         {
@@ -165,6 +167,13 @@ export default {
             { name: "未审批订单", path: "/index/notapproved.vue", id: "12" },
             { name: "未发布订单", path: "/index/notunpublished.vue", id: "13" },
             { name: "已发布订单", path: "/index/published.vue", id: "14" }
+          ]
+        },
+        {
+          name: "展会订单",
+          id: "33",
+          child: [
+            { name: "展会订单", path: "/index/exhibitionOrders.vue", id: "34" },
           ]
         },
         {

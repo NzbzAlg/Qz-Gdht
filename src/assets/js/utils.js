@@ -41,4 +41,22 @@ const getSign = function (params) {
   let sign = md5(str)
   return sign
 }
-export default getSign
+const formDataToObject = function (formData, excludeFile) {
+  if (!(formData instanceof FormData)) {
+      return null
+  }
+  let obj = {}
+  for (let entrie of formData.entries()) {
+      let key = entrie[0]
+      let value = entrie[1]
+      if (excludeFile && value instanceof File) {
+          continue
+      }
+      obj[key] = value
+  }
+  return obj
+}
+export default {
+  getSign,
+  formDataToObject
+}

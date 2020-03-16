@@ -245,7 +245,7 @@ export default {
         orderId:this.id,
         type:1,
       }
-      let str =  utils(params)
+      let str =  utils.getSign(params)
       let token = window.sessionStorage.getItem('token')
       console.log(str)
       this.href = `http://47.105.207.228:8874/modules/order/export/csv?orderId=${this.id}&timestamp=${time}&type=1&sign=${str}&token=${token}`
@@ -257,7 +257,7 @@ export default {
         orderId:this.id,
         type:2,
       }
-      let str =  utils(params)
+      let str =  utils.getSign(params)
       let token = window.sessionStorage.getItem('token')
       console.log(str)
       this.href1 = `http://47.105.207.228:8874/modules/order/export/csv?orderId=${this.id}&timestamp=${time}&type=2&sign=${str}&token=${token}`

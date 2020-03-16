@@ -39,4 +39,7 @@ export default {
   color: #2c3e50;
   min-width: 1366px;
 }
+/* .el-upload--picture-card{
+  margin-right: 200px;
+} */
 </style>

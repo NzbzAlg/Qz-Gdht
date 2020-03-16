@@ -2,7 +2,7 @@
   <div>
     <sx></sx>
     <!-- 客户统计 -->
-    <el-row :class="$style.f_row">
+    <!-- <el-row :class="$style.f_row">
       <el-col :span="4" :style="$style.f_da">
         <el-card shadow="hover">
           <span :class="$style.f_sl">{{all}}</span>
@@ -33,7 +33,7 @@
           <p>市级一般代理商</p>
         </el-card>
       </el-col>
-    </el-row>
+    </el-row> -->
     <el-input placeholder="请输入关键字" v-model="name" :class="$style.name" clearable style="width:20%"></el-input>
     <el-select v-model="value" placeholder="请选择" :class="$style.office">
       <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -53,18 +53,18 @@
         <el-table-column property="userName" label="用户名称" sortable></el-table-column>
         <el-table-column property="stamp" label="类型" sortable>
           <template slot-scope="scope">
-            <span v-if="scope.row.proxy_type===1">省级运营中心</span>
+            <!-- <span v-if="scope.row.proxy_type===1">省级运营中心</span>
             <span v-if="scope.row.proxy_type===2">市级运营中心</span>
             <span v-if="scope.row.proxy_type===3">市级一般代理商</span>
             <span v-if="scope.row.proxy_type===4">大客户</span>
             <span v-if="scope.row.proxy_type===5">清竹数据</span>
-            <span v-if="scope.row.proxy_type===6">合资公司</span>
+            <span v-if="scope.row.proxy_type===6">合资公司</span> -->
             <span v-if="scope.row.proxy_type===7">展会演示-家装建材行业</span>
             <span v-if="scope.row.proxy_type===8">展会演示-孕婴童行业</span>
             <span v-if="scope.row.proxy_type===9">展会演示-教育行业</span>
           </template>
         </el-table-column>
-        <el-table-column property="region" label="区域" sortable></el-table-column>
+        <!-- <el-table-column property="region" label="区域" sortable></el-table-column> -->
         <el-table-column label="操作" width="400" style="text-align:center">
           <template slot-scope="scope">
             <el-button size="mini" type="success" @click="handleDelete(scope.$index, scope.row)">重置密码</el-button>
@@ -98,9 +98,9 @@
         <el-form-item label="类型">
           <el-input v-model="formLabelAlign.stamp"></el-input>
         </el-form-item>
-        <el-form-item label="区域">
+        <!-- <el-form-item label="区域">
           <el-input v-model="formLabelAlign.region"></el-input>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <span>
         <el-button @click="full = false">取 消</el-button>
@@ -170,13 +170,13 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formkhfull.proxyType!=4">
+          <!-- <el-col :span="12" v-if="formkhfull.proxyType!=4">
             <el-form-item label="区域:">
               <div :class="$style.code">
                 <el-input v-model="formkhfull.region" :disabled="jy"></el-input>
               </div>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-divider content-position="left" v-if="formkhfull.proxyType!=5&formkhfull.proxyType!=6&formkhfull.proxyType!=1&formkhfull.proxyType!=7&formkhfull.proxyType!=8&formkhfull.proxyType!=9">上级客户</el-divider>
         <!-- 市级运营中心的下级 -->
@@ -326,12 +326,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-divider content-position="left">区块链</el-divider>
+        <!-- <el-divider content-position="left">区块链</el-divider>
         <el-form-item label="区块链账号:">
           <div :class="$style.code">
             <el-input v-model="formkhfull.account" :disabled="jy"></el-input>
           </div>
-        </el-form-item>
+        </el-form-item> -->
         <el-divider content-position="left">备注</el-divider>
         <el-form-item label="备注:">
           <div :class="$style.code">
@@ -364,24 +364,16 @@ export default {
       options: [
         {
           id: 1,
-          name: '省级运营中心'
+          name: '展会演示-家装建材行业'
         },
         {
           id: 2,
-          name: '市级运营中心'
+          name: '展会演示-孕婴童行业'
         },
         {
           id: 3,
-          name: '市级一般代理商'
+          name: '展会演示-教育行业'
         },
-        {
-          id: 4,
-          name: '大客户'
-        },
-        {
-          id: 5,
-          name: '清竹数据'
-        }
       ],
       all: null,
       bigkh: null,
@@ -605,7 +597,7 @@ export default {
         params: {
           size: this.sizes,
           page: this.pages,
-          isVisitor:0
+          isVisitor:1
         }
       }).then(res => {
         var { code, data } = res.data
@@ -677,41 +669,41 @@ export default {
     },
     search () {
       console.log(this.value)
-      this.page = 0
-      this.currentPage4 = 1
-      this.$http.get(`modules/merchant/list`, {
-        params: {
-          size: this.sizes,
-          page: this.pages,
-          search: this.name,
-          proxyType: this.value,
-        }
-      }).then(res => {
-        // console.log(res)
-        var { code, data } = res.data
-        if (code === 1000) {
-          this.tableData = data.content
-          this.total = data.total
-          this.tableData.forEach(item => {
-            if (item.province === null) {
-              item.region = ''
-            } else if (item.city === null) {
-              item.region = item.province
-            } else {
-              item.region = item.province + "\\" + item.city
-            }
-          })
-        } else if (code == 2001) {
-          this.$message.error(res.data.message);
-          window.sessionStorage.clear();
-          window.localStorage.clear();
-          this.$router.push('/')
-        } else {
-          this.$message.error(res.data.message);
-        }
-      }).catch((err) => {
-        console.log('错误信息' + err)
-      })
+      // this.page = 0
+      // this.currentPage4 = 1
+      // this.$http.get(`modules/merchant/list`, {
+      //   params: {
+      //     size: this.sizes,
+      //     page: this.pages,
+      //     search: this.name,
+      //     proxyType: this.value,
+      //   }
+      // }).then(res => {
+      //   // console.log(res)
+      //   var { code, data } = res.data
+      //   if (code === 1000) {
+      //     this.tableData = data.content
+      //     this.total = data.total
+      //     this.tableData.forEach(item => {
+      //       if (item.province === null) {
+      //         item.region = ''
+      //       } else if (item.city === null) {
+      //         item.region = item.province
+      //       } else {
+      //         item.region = item.province + "\\" + item.city
+      //       }
+      //     })
+      //   } else if (code == 2001) {
+      //     this.$message.error(res.data.message);
+      //     window.sessionStorage.clear();
+      //     window.localStorage.clear();
+      //     this.$router.push('/')
+      //   } else {
+      //     this.$message.error(res.data.message);
+      //   }
+      // }).catch((err) => {
+      //   console.log('错误信息' + err)
+      // })
     },
     handleSizeChange (val) {
       this.sizes = val
@@ -792,7 +784,7 @@ export default {
           'id':this.formkhfull.id,//id
           'service':this.formkhfull.service,//客服
           'parentName':this.formkhfull.parentYB||this.formkhfull.parentSJ||this.formkhfull.parentHZ,
-          isVisitor:0
+          isVisitor:1
         }
       this.$http.post(`modules/merchant/update`,info).then(res => {
         var { code, data } = res.data

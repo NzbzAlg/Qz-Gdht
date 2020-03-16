@@ -74,39 +74,38 @@ uniteaxios.install = function (Vue) {
     return params
   }
   axios.interceptors.request.use(function (config) {
-    // config.headers.common[constants.API_TOKEN] = Store.state.token
-    // axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
     config.headers['api_token'] = window.sessionStorage.getItem('token')
     let sign
     if (config.method == 'get') {
-      config.params = serializeParams(config.params)      // 序列化请求参数
+      config.params = serializeParams(config.params) // 序列化请求参数
       config.params['timestamp'] = new Date().getTime()
-      sign = utils(config.params)
+      sign = utils.getSign(config.params)
       if (sign) {
-          config.params[constants.PARAM_SIGN_NAME] = sign
+        config.params[constants.PARAM_SIGN_NAME] = sign
       }
-  } else if (config.method == 'delete') {
+    } else if (config.method == 'delete') {
       config.params = config.params || {}
       config.params['timestamp'] = new Date().getTime()
-      sign = utils(config.params)
+      sign = utils.getSign(config.params)
       // console.log(sign)
       config.params[constants.PARAM_SIGN_NAME] = sign
-  } else {
+    }  else {
       if (config.data instanceof FormData) {
-          config.data.append('timestamp', new Date().getTime())
-          let sign = utils(utils.formDataToObject(config.data, true))
-          config.data.append(constants.PARAM_SIGN_NAME, sign)
-          // console.log(sign)
+        console.log(config )
+        config.data.append('timestamp', new Date().getTime())
+        let sign = utils.getSign(utils.formDataToObject(config.data, true))
+        config.data.append(constants.PARAM_SIGN_NAME, sign)
+        // console.log(sign)
       } else {
-          config.data = config.data || {}
-          config.data = serializeParams(config.data)  // 序列化请求参数
-          config.data['timestamp'] = new Date().getTime()
-          sign = utils(config.data)
-          config.data[constants.PARAM_SIGN_NAME] = sign
-          // console.log(sign)
-          config.data = querystring.stringify(config.data)
+        config.data = config.data || {}
+        config.data = serializeParams(config.data) // 序列化请求参数
+        config.data['timestamp'] = new Date().getTime()
+        sign = utils.getSign(config.data)
+        config.data[constants.PARAM_SIGN_NAME] = sign
+        // console.log(sign)
+        config.data = querystring.stringify(config.data)
       }
-  }
+    }
     return config
   }, function (error) {
     return Promise.reject(error)

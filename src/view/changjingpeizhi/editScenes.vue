@@ -17,7 +17,14 @@
     </el-row>-->
     <el-divider content-position="left">采集地点</el-divider>
     <el-row>
-      <el-col :span="7" style="margin-left: 84px;">
+      <!-- -->
+       <div>
+        <el-col :span="5" style="margin-left:40px">
+          <span :class="$style.f_khmc">采集场地:</span>
+          <el-input placeholder="请输入内容" :class="$style.f_khipt" v-model="collectionSite" clearable></el-input>
+        </el-col>
+      </div>
+      <el-col :span="5" style="margin-left: 84px;">
         <span :class="$style.f_khmc">省:</span>
         <el-select
           v-model="sheng"
@@ -29,7 +36,7 @@
           <el-option v-for="item in sheng1" :key="item.id" :label="item.name" :value="item.name"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="5">
         <span :class="$style.f_khmc">市:</span>
         <el-select
           v-model="shi"
@@ -41,7 +48,7 @@
           <el-option v-for="item in shi1" :key="item.id" :label="item.name" :value="item.name"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="5">
         <span :class="$style.f_khmc">区:</span>
         <el-select
           v-model="qu"
@@ -209,11 +216,11 @@
       <el-col :span="7" style="margin-left: 40px;">
         <span :class="$style.f_khmc">人群标签:</span>
         <el-select
+          filterable
           v-model="value1"
           multiple
           :class="$style.f_khipt"
           collapse-tags
-          @focus="chaxun1"
           @change="chaxun"
           placeholder="请选择"
         >
@@ -279,6 +286,7 @@ export default {
   },
   data() {
     return {
+      collectionSite:'',
       startTime: "",
       endTime: "",
       input: "",
@@ -355,6 +363,7 @@ export default {
           var { code, data } = res.data;
           if (code === 1000) {
             this.input = data.name;
+            this.collectionSite = data.collectionSite
             this.leixing = data.type;
             this.sheng = data.province.name;
             this.shi = data.city.name;
@@ -1019,7 +1028,9 @@ export default {
             regionType: this.ScenesSubdivisionid,
             signCrowdSet: ids,
             id: this.id,
-            deduplication: this.quchong
+            deduplication: this.quchong,
+            collectionSite:this.collectionSite,
+
           };
           console.log(arr2);
           console.log("quchong", this.deduplication);
@@ -1059,7 +1070,8 @@ export default {
             toDate: this.valuetime[1],
             fromTime: this.startTime.slice(0, 2),
             toTime: this.endTime.slice(0, 2),
-            deduplication: this.quchong
+            deduplication: this.quchong,
+            'collectionSite':this.collectionSite,
           };
           console.log("quchong1", this.deduplication);
           console.log(arr2);
@@ -1102,7 +1114,8 @@ export default {
             regionType: this.ScenesSubdivisionid,
             signCrowdSet: id,
             id: this.id,
-            deduplication: this.quchong
+            deduplication: this.quchong,
+            collectionSite:this.collectionSite,
           };
           console.log(arr2);
           console.log("quchong2", this.deduplication);
@@ -1141,7 +1154,8 @@ export default {
             toDate: this.valuetime[1],
             fromTime: this.startTime.slice(0, 2),
             toTime: this.endTime.slice(0, 2),
-            deduplication: this.quchong
+            deduplication: this.quchong,
+            collectionSite:this.collectionSite,
           };
           console.log(arr2);
           console.log(this.valuetime);

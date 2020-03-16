@@ -10,19 +10,25 @@
     </el-row>
     <el-divider content-position="left">采集地点</el-divider>
     <el-row>
-      <el-col :span="7" style="margin-left: 84px;">
+      <div>
+        <el-col :span="5" style="margin-left:40px">
+          <span :class="$style.f_khmc">采集场地:</span>
+          <el-input placeholder="请输入内容" :class="$style.f_khipt" v-model="collectionSite" clearable></el-input>
+        </el-col>
+      </div>
+      <el-col :span="5" style="margin-left: 84px;">
         <span :class="$style.f_khmc">省:</span>
         <el-select v-model="sheng" :class="$style.f_khipt" @change="province" placeholder="请选择">
           <el-option v-for="item in sheng1" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="5">
         <span :class="$style.f_khmc">市:</span>
         <el-select v-model="shi" :class="$style.f_khipt" @change="city" placeholder="请选择">
           <el-option v-for="item in shi1" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="7">
+      <el-col :span="5">
         <span :class="$style.f_khmc">区:</span>
         <el-select v-model="qu" :class="$style.f_khipt" placeholder="请选择">
           <el-option v-for="item in qu1" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -218,6 +224,7 @@ export default {
   data () {
     return {
       name: '',
+      collectionSite:'',
       startTime: '',
       endTime: '',
       input: '',
@@ -703,6 +710,7 @@ export default {
         if (this.leixing === 1) {
           let info = {
             'name': this.name,
+            'collectionSite':this.collectionSite,
             'type': 1,
             'province': this.sheng,
             'city': this.shi,
@@ -739,6 +747,7 @@ export default {
         } else if (this.leixing === 2) {
           let info = {
             'name': this.name,
+            'collectionSite':this.collectionSite,
             'type': 2,
             'province': this.sheng,
             'city': this.shi,

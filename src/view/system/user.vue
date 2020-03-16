@@ -1,7 +1,7 @@
 <template>
   <div>
     <sx></sx>
-    <el-input placeholder="请输入姓名" v-model="user" :class="$style.name" clearable style="width:20%"></el-input>
+    <el-input placeholder="请输入姓名" :class="$style.name" clearable style="width:20%"></el-input>
     <!-- <el-select v-model="value" clearable placeholder="请输入角色" :class="$style.ip">
       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
     </el-select>

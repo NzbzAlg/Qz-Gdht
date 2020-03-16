@@ -10,8 +10,8 @@
     </el-row>
     <!-- 操作 -->
     <div style="margin-bottom: 20px;text-align: left;">
-      <el-input placeholder="请输入标签名称"  clearable style=" width: calc(100% - 80%);float:left"></el-input>
-      <el-button type="success" size="medium" icon="el-icon-search" style="margin-left:20px;">搜索</el-button>
+      <el-input placeholder="请输入标签名称"  v-model="search1" clearable style=" width: calc(100% - 80%);float:left"></el-input>
+      <el-button type="success" size="medium" icon="el-icon-search" style="margin-left:20px;" @click="search">搜索</el-button>
       <el-button size="medium" type="primary" @click="zengjia">增加</el-button>
     </div>
     <!-- 表格 -->
@@ -98,6 +98,7 @@ export default {
       total:null,
       peopellabel:'',
       pages: 0,
+      search1:''
     }
   },
   mounted () {
@@ -109,6 +110,32 @@ export default {
         params: {
           size: this.sizes,
           page: this.pages,
+        }
+      }).then(res => {
+        var { code, data } = res.data
+        if (code === 1000) {
+          this.tableData = data
+          console.log(data.length)
+          this.total = data.length
+          this.peopellabel = data.length
+        } else if (code == 2001) {
+          this.$message.error(res.data.message);
+          window.sessionStorage.clear();
+          window.localStorage.clear();
+          this.$router.push('/')
+        } else {
+          this.$message.error(res.data.message);
+        }
+      }).catch((err) => {
+        console.log('错误信息' + err)
+      })
+    },
+    search(){
+      this.$http.get(`modules/signCrowd/list`, {
+        params: {
+          size: this.sizes,
+          page: this.pages,
+          keyWord:this.search1
         }
       }).then(res => {
         var { code, data } = res.data
